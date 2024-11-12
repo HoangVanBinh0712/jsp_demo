@@ -1,9 +1,18 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <html>
 <head>
     <title>Employee Form</title>
     <style>
+        body{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         .form-container {
             background-color: #fff;
@@ -17,6 +26,10 @@
         .form-container h2 {
             text-align: center;
             color: #1a73e8;
+        }
+        .h1-css {
+            color: #1a73e8;
+            text-align: center;
         }
 
         .form-container .form-group {
@@ -72,89 +85,113 @@
             display: flex;
             flex-flow: column;
         }
+
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
 <div class="form-container">
-    <h2>Employee Form</h2>
-    <div id="form-employee">
-        <div class="form-group">
-            <label for="form-employee-employeeCode">Employee Code</label>
-            <input type="text" id="form-employee-employeeCode" name="employeeCode" disabled>
+    <h1 class="h1-css">Register/Edit employee form</h1>
+    <%--@elvariable id="employeeForm" type="org.jsp_demo.request.EmployeeForm"--%>
+    <form:form action="employee-form" method="post" modelAttribute="employeeForm">
+        <div class="form-group" id="form-group-employee-code">
+            <form:label path="employeeCode">Employee Code</form:label>
+            <form:input path="employeeCode" type="text"/>
+            <form:errors path="employeeCode" cssClass="error" />
         </div>
 
         <div class="form-group">
-            <label for="form-employee-employeeName">Employee Name</label>
-            <input type="text" id="form-employee-employeeName" name="employeeName" required>
+            <form:label path="employeeName">Employee Name</form:label>
+            <form:input path="employeeName" type="text"/>
+            <form:errors path="employeeName" cssClass="error" />
         </div>
 
         <div class="form-group">
-            <label for="form-employee-birth">Birth Date</label>
-            <input type="date" id="form-employee-birth" name="birth" required>
+            <form:label path="birth">Birth Date</form:label>
+            <form:input path="birth" type="date"/>
+            <form:errors path="birth" cssClass="error" />
         </div>
 
         <div class="form-group">
-            <label for="form-employee-email">Email</label>
-            <input type="email" id="form-employee-email" name="email" required>
+            <form:label path="email">Email</form:label>
+            <form:input path="email" type="email"/>
+            <form:errors path="email" cssClass="error" />
         </div>
 
         <div class="form-group flex">
             <div class="flex-reverse">
-                <label for="form-employee-isManager">Manager</label>
-                <input type="checkbox" id="form-employee-isManager" name="isManager">
+                <form:label path="isManager">Manager</form:label>
+                <form:checkbox path="isManager" value="1"/>
+                <form:hidden path="isManager" value="0"/>
             </div>
             <div class="flex-reverse">
-                <label for="form-employee-isActive">Active</label>
-                <input type="checkbox" id="form-employee-isActive" name="deleteFlag">
+                    <%-- If value equal to the value -> checked --%>
+                <form:label path="deleteFlag">Active</form:label>
+                <form:checkbox path="deleteFlag" value="0"/>
+                <form:hidden path="deleteFlag" value="1"/>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="form-employee-managerSelect">Manager Code</label>
-            <select id="form-employee-managerSelect" class="selection" name="managerCode">
+            <form:label path="managerCode">Manager Code</form:label>
+            <form:select class="selection" path="managerCode">
                 <option value=""></option>
+                <jsp:useBean id="managerList" scope="request" type="java.util.List"/>
                 <c:forEach items="${managerList}" var="emp">
                     <option value="${emp.employeeCode}"
                             <c:if test="${emp.selected == true}">selected</c:if>>${emp.employeeName}</option>
                 </c:forEach>
-            </select>
+            </form:select>
+            <form:errors path="managerCode" cssClass="error" />
         </div>
 
         <div class="form-group">
-            <label for="form-employee-departmentSelect">Department</label>
-            <select id="form-employee-departmentSelect" class="selection" name="departmentCode">
+            <form:label path="departmentCode"> Department</form:label>
+            <form:select class="selection" path="departmentCode">
                 <option value=""></option>
+                <jsp:useBean id="departmentList" scope="request" type="java.util.List"/>
                 <c:forEach items="${departmentList}" var="dept">
                     <option value="${dept.departmentCode}"
                             <c:if test="${dept.selected == true}">selected</c:if>>${dept.departmentName}</option>
                 </c:forEach>
-            </select>
+            </form:select>
+            <form:errors path="departmentCode" cssClass="error" />
+
         </div>
 
         <div class="form-group">
-            <button class="btn-submit" onclick="btnSaveEditClick()">Save/Edit</button>
+            <button class="btn-submit">Save/Edit</button>
         </div>
-    </div>
-</div><%--@elvariable id="employeeForm" type="org.jsp_demo.request.EmployeeFormTest"--%>
-<form:form action="submitEmployeeForm" method="post" modelAttribute="employeeForm">
-    <div>
-        <form:label path="employeeCode">Employee Code:</form:label>
-        <form:input path="employeeCode" />
-        <form:errors path="employeeCode" cssClass="error" />
-    </div>
-    <div>
-        <form:label path="employeeName">Employee Name:</form:label>
-        <form:input path="employeeName" />
-        <form:errors path="employeeName" cssClass="error" />
-    </div>
-    <!-- Add other form fields here -->
-    <div>
-        <input type="submit" value="Submit" />
-    </div>
-</form:form>
 
-<c:if test="${not empty successMessage}">
-    <p style="color: green;">${successMessage}</p>
-</c:if>
+
+    </form:form>
+</div>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.getElementById('employeeForm').addEventListener('submit', function (event) {
+        const currentParams = new URLSearchParams(window.location.search);
+        if (currentParams.toString()) {
+            let action = this.action;
+            action = action + `?` + currentParams;
+            this.action = action;
+        }
+    });
+
+    $(document).ready(function () {
+        const currentParams = new URLSearchParams(window.location.search);
+        if (currentParams.toString()) {
+            let employeeCode = $("#employeeCode");
+            if (employeeCode) {
+                employeeCode.prop('readonly', true)
+            }
+        } else {
+            let employeeCode = $("#form-group-employee-code");
+            employeeCode.css('display', 'none');
+        }
+
+    });
+</script>
 </html>

@@ -1,4 +1,4 @@
-package pc.gear.config.message;
+package org.jsp_demo.config.message;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +14,7 @@ public class MessageSourceConfig {
     public MessageSource messageSource() {
 
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:messages/vi/messages",
-                "classpath:messages/vi/system",
+        messageSource.setBasenames(
                 "classpath:messages/en/messages",
                 "classpath:messages/en/system");
         messageSource.setDefaultEncoding("UTF-8");

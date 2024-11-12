@@ -1,4 +1,4 @@
-package org.jsp_demo.dto;
+package org.jsp_demo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

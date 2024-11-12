@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeE {
+public class EmployeeEntity {
 
     private String employeeCode;
 

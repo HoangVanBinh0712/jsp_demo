@@ -3,6 +3,7 @@ package org.jsp_demo.config;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +52,7 @@ public class MyBatisConfig {
         configuration.setMapUnderscoreToCamelCase(true);
         configuration.setLazyLoadingEnabled(true);
         configuration.setAggressiveLazyLoading(false);
-
+        configuration.setJdbcTypeForNull(JdbcType.NULL);
         sessionFactory.setConfiguration(configuration);
         return sessionFactory.getObject();
     }
